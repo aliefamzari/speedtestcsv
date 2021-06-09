@@ -3,8 +3,8 @@
 commandlist=("speedtest-cli" "wget")
 for i in "${commandlist[@]}"; do
     if ! [ -x "$(command -v $i)" ]; then
-    echo "$i not exist" 
-    exit 1
+        echo "$i not exist" 
+        exit 1
     fi
     done
 
@@ -13,8 +13,8 @@ for i in "${commandlist[@]}"; do
 wget -q --spider http://google.com
 if [ $? -eq 0 ]; then
     echo "Online"
-else
-    echo "Offline"
+    else
+        echo "Offline"
 fi
 
 date=$(date +"%Y%m%d_%H%M")
