@@ -9,19 +9,25 @@ for i in "${commandlist[@]}"; do
     done
 
 
-#Check Internet
-wget -q --spider http://google.com
-if [ $? -eq 0 ]; then
-    echo "Online"
-    else
-        echo "Offline"
-fi
+
 
 date=$(date +"%Y%m%d_%H%M")
-ispheader="ISP"
 header1=$(speedtest-cli --csv-header)
-isp=$(curl -s ipinfo.io/org)
-echo $ispheader,$header1 > test.csv
 result=$(speedtest-cli --share --csv)
-echo \"$isp\",$result >> test.csv
+isp=$(curl -s ipinfo.io/org)
+
+#Check CSV file if exist, and write CSV file if not exist.
+if ! [ -f result.csv ]; then
+    echo "ISP",$header1 > result.csv
+    #Check internet
+    wget -q --spider http://google.com
+    if ! [ $? -eq 0 ]; then
+    echo "OFFLINE","OFFLINE","OFFLINE","OFFLINE","OFFLINE","OFFLINE","OFFLINE","OFFLINE","OFFLINE","OFFLINE","OFFLINE" >> result.csv
+        else
+        echo \"$isp\",$result >> result.csv
+    
+    fi
+
+fi
+
 
