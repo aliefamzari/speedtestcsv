@@ -26,7 +26,7 @@ if [ $internet != 0 ]; then
     else 
         isp=$(curl -s ipinfo.io/org)
         result=$(/home/pi/speedtestookla/speedtest -f csv)
-        echo \"$isp\",$result >> result.csv
+        echo "$timestamp",\"$isp\",$result >> result.csv
 fi  
         
 
