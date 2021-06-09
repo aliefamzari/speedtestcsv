@@ -1,6 +1,6 @@
 #!/bin/bash
 #Check command
-commandlist=("speedtest-cli" "wget")
+commandlist=("speedtest-cli" "wget" "curl")
 for i in "${commandlist[@]}"; do
     if ! [ -x "$(command -v $i)" ]; then
         echo "$i not exist" 
