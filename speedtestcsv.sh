@@ -1,12 +1,12 @@
 #!/bin/bash
-Check command
-commandlist=("/home/pi/speedtestookla/speedtest" "wget" "curl")
-for i in "${commandlist[@]}"; do
-    if ! [ -x "$(command -v $i)" ]; then
-        echo "$i not exist" 
-        exit 1
-    fi
-    done
+# Check command
+# commandlist=("/home/pi/speedtestookla/speedtest" "wget" "curl")
+# for i in "${commandlist[@]}"; do
+#     if ! [ -x "$(command -v $i)" ]; then
+#         echo "$i not exist" 
+#         exit 1
+#     fi
+#     done
 
 
 
