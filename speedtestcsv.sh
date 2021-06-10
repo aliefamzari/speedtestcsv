@@ -1,5 +1,5 @@
 #!/bin/bash
-Check command
+#Check command
 commandlist=("/home/pi/speedtestookla/speedtest" "wget" "curl")
 for i in "${commandlist[@]}"; do
     if ! [ -x "$(command -v $i)" ]; then
