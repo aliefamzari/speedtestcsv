@@ -20,7 +20,6 @@ for i in "${commandlist[@]}"; do
     fi
 done
 
-
 #Check CSV file if exist, and write CSV file if not exist.
 if ! [ -f $SCRIPT_DIR/result.csv ]; then
     echo "Time", "ISP",$header1 > $SCRIPT_DIR/result.csv
@@ -35,9 +34,4 @@ if [ $internet != 0 ]; then
         isp=$(curl -s ipinfo.io/org)
         result=$($speedtest -f csv)
         echo "$timestamp",\"$isp\",$result >> $SCRIPT_DIR/result.csv
-fi  
-        
-
-
-
-
+fi 
