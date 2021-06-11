@@ -6,7 +6,7 @@
 
 
 #Speedtest bin path
-speedtest="/home/pi/speedtestookla/speedtest"  #PLEASE CHANGE THIS PATH POINT TO WHERE YOU SAVE YOUR SPEEDTEST INSTALL. 
+speedtest="/home/pi/speedtestookla/speedtest"  #PLEASE CHANGE THIS PATH POINT TO WHERE YOU UNTAR YOUR SPEEDTEST INSTALL. 
 #Get current directory where script is located. Result will be stored on same directory as script file. 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 timestamp=$(date --iso-8601=s)
