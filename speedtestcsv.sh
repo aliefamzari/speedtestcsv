@@ -10,7 +10,7 @@
 #         exit 1
 #     fi
 # done
-
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 curdir=$(pwd)
 echo $curdir
 
