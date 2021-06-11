@@ -13,7 +13,7 @@ done
 
 
 #Todo
-#define PATH
+#define file path
 csvfile="./result.csv"
 
 timestamp=$(date --iso-8601=s)
