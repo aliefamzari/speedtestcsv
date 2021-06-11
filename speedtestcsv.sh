@@ -1,5 +1,5 @@
 #!/bin/bash
-# Test your internet speed and output to CSV file. Using Speedtest from ookla.  
+#Test your internet speed and output to CSV file. Using Speedtest from ookla.  
 #Author: Alif Amzari Mohd Azamee
 #License MIT
 #Check command
@@ -9,7 +9,7 @@ for i in "${commandlist[@]}"; do
         echo "$i not exist" 
         exit 1
     fi
-    done
+done
 
 
 #Todo
