@@ -9,7 +9,8 @@ for i in "${commandlist[@]}"; do
     done
 
 
-#Filename
+#Todo
+#define PATH
 
 timestamp=$(date --iso-8601=s)
 header1="Server_name,Server_id,Latency,Jitter,Packet_loss,Download,Upload,Download_bytes,Upload_bytes,Share_url"
