@@ -4,7 +4,7 @@
 # License MIT
 
 #Speedtest bin path
-speedtest="/home/pi/speedtestookla/speedtest"
+speedtest="/home/pi/speedtestookla/speedtest"  #PLEASE CHANGE THIS PATH POINT TO WHERE YOU SAVE YOUR SPEEDTEST INSTALL. 
 
 # Check command
 commandlist=("$speedtest" "wget" "curl")
