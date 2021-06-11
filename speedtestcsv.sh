@@ -2,8 +2,12 @@
 # Test your internet speed and output to CSV file, intended to run on cron. Using Speedtest from ookla. Speedtest-cli from Sivel will not work and unsupported.   
 # Author: Alif Amzari Mohd Azamee
 # License MIT
+
+#Speedtest bin path
+speedtest="/home/pi/speedtestookla/speedtest"
+
 # Check command
-commandlist=("/home/pi/speedtestookla/speedtest" "wget" "curl")
+commandlist=("$speedtest" "wget" "curl")
 for i in "${commandlist[@]}"; do
     if ! [ -x "$(command -v $i)" ]; then
         echo "$i not exist" 
