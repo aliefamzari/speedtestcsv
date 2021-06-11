@@ -1,5 +1,5 @@
 #!/bin/bash
-# Test your internet speed and output to CSV file, intended to run on cron. Using Speedtest from ookla.  
+# Test your internet speed and output to CSV file, intended to run on cron. Using Speedtest from ookla. Speedtest-cli from Sivel will not work and unsupported.   
 # Author: Alif Amzari Mohd Azamee
 # License MIT
 # Check command
