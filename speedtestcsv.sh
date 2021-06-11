@@ -11,8 +11,7 @@
 #     fi
 # done
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-curdir=$(pwd)
-echo $curdir
+echo $SCRIPT_DIR
 
 # #Todo
 # #define file path
