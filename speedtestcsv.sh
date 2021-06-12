@@ -24,7 +24,7 @@ done
 
 #Check CSV file if exist, and write CSV file if not exist.
 if ! [ -f $SCRIPT_DIR/result.csv ]; then
-    echo "Time", "ISP",$header1 > $SCRIPT_DIR/result.csv
+    echo "Time","ISP",$header1 > $SCRIPT_DIR/result.csv
 fi
 
 #Check internet if offline or online
