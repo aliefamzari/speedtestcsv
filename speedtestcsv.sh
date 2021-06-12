@@ -30,14 +30,14 @@ if ! [ -f $SCRIPT_DIR/result.csv ]; then
     header
 fi
 
-#TODO - Keep only 1 month CSV row
-# mtd=$(date --iso-8601 |cut -d '-' -f2) 
-# csvmnt=$(sed -n '2p' $SCRIPT_DIR/result.csv |cut -d- -f2)
-
-# if ! [ $mtd = $csvmnt ]; then
-#     rm $SCRIPT_DIR/result.csv
-#     header
-# fi
+#TODO - Keep only 1 month CSV row (Untested)
+mtd=$(date --iso-8601 |cut -d '-' -f2) 
+resultlength=$(cat $SCRIPT_DIR/result.csv |wc -l)
+csvmnt=$(sed -n '2p' $SCRIPT_DIR/result.csv |cut -d- -f2)
+if [ $resultlength > 2 ] && [ $mtd -ne $csvmnt ];
+    rm $SCRIPT_DIR/result.csv
+    header
+fi
 
 #Check internet if offline or online
 wget -q --spider http://google.com
