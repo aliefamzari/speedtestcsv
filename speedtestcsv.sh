@@ -27,7 +27,7 @@ if ! [ -f $SCRIPT_DIR/result.csv ]; then
     echo "Time","ISP",$header1 > $SCRIPT_DIR/result.csv
 fi
 
-
+#TODO - Keep only 1 month CSV row
 
 #Check internet if offline or online
 wget -q --spider http://google.com
