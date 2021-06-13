@@ -34,7 +34,7 @@ fi
 mtd=$(date --iso-8601 |cut -d '-' -f2) 
 resultlength=$(cat $SCRIPT_DIR/result.csv |wc -l)
 csvmnt=$(sed -n '2p' $SCRIPT_DIR/result.csv |cut -d- -f2)
-if [ $resultlength > 2 ] && [ $mtd -ne $csvmnt ];
+if [ $resultlength > 2 ] && [ $mtd -ne $csvmnt ]; then
     rm $SCRIPT_DIR/result.csv
     header
 fi
