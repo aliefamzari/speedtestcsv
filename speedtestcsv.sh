@@ -44,7 +44,7 @@ wget -q --spider http://google.com
 internet=$(echo $?)
 if [ $internet != 0 ]; then
     #Output offline result to CSV file
-    echo "$timestamp","OFFLINE","OFFLINE","OFFLINE","OFFLINE","OFFLINE","OFFLINE","OFFLINE","OFFLINE","OFFLINE","OFFLINE" >> $SCRIPT_DIR/result.csv
+    echo "$timestamp","OFFLINE","OFFLINE","OFFLINE","OFFLINE","OFFLINE","OFFLINE","OFFLINE","OFFLINE","OFFLINE","OFFLINE","OFFLINE" >> $SCRIPT_DIR/result.csv
     else 
         #Output online result to CSV file
         isp=$(curl -s ipinfo.io/org)
