@@ -11,7 +11,7 @@ speedtest="/home/pi/speedtestookla/speedtest"  #PLEASE CHANGE THIS PATH POINT TO
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 timestamp=$(date --iso-8601=s)
 #CSV file header
-header1="Server_name,Server_id,Latency,Jitter,Packet_loss,Download,Upload,Download_bytes,Upload_bytes,Share_url"
+csvheader="Time,ISP,Server_name,Server_id,Latency,Jitter,Packet_loss,Download,Upload,Download_bytes,Upload_bytes,Share_url,IP"
 
 # Check command
 commandlist=("$speedtest" "wget" "curl")
@@ -23,7 +23,7 @@ for i in "${commandlist[@]}"; do
 done
 
 function header () {
-    echo "Time","ISP",$header1,"IP" > $SCRIPT_DIR/result.csv
+    echo $csvheader > $SCRIPT_DIR/result.csv
 }
 #Check CSV file if exist, and write CSV file if not exist.
 if ! [ -f $SCRIPT_DIR/result.csv ]; then
