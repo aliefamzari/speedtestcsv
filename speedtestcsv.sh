@@ -23,7 +23,7 @@ for i in "${commandlist[@]}"; do
 done
 
 function header () {
-    echo "Time","ISP",$header1 > $SCRIPT_DIR/result.csv
+    echo "Time","ISP",$header1,"IP" > $SCRIPT_DIR/result.csv
 }
 #Check CSV file if exist, and write CSV file if not exist.
 if ! [ -f $SCRIPT_DIR/result.csv ]; then
@@ -48,6 +48,7 @@ if [ $internet != 0 ]; then
     else 
         #Output online result to CSV file
         isp=$(curl -s ipinfo.io/org)
+        ip=$(curl -s /dev/null ifconfig.co 2>&1)
         result=$($speedtest -f csv)
-        echo "$timestamp",\"$isp\",$result >> $SCRIPT_DIR/result.csv
+        echo "$timestamp",\"$isp\",$result,"$ip" >> $SCRIPT_DIR/result.csv
 fi 
