@@ -36,6 +36,7 @@ resultlength=$(cat $SCRIPT_DIR/result.csv |wc -l)
 csvmnt=$(sed -n '2p' $SCRIPT_DIR/result.csv |cut -d- -f2)
 if [ $resultlength > 2 ] && [ $mtd -ne $csvmnt ]; then
     rm $SCRIPT_DIR/result.csv
+    sleep 1
     header
 fi
 
