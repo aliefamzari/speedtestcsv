@@ -6,4 +6,4 @@ Crontab entry example (run every hour): */60 * * * * /home/pi/speedtestcsv/speed
 
 
 Output sample:
-![Sample result](https://github.com/aliefamzari/speedtestcsv/blob/main/img/excelspeedtest.PNG?raw=true "Optional Title")
+![Sample result](https://github.com/aliefamzari/speedtestcsv/blob/main/img/soffice.bin_qio75nrrsI.png?raw=true "Optional Title")
