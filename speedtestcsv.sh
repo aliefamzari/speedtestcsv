@@ -14,7 +14,7 @@ timestamp=$(date --iso-8601=s)
 csvheader="Time,ISP,Server_name,Server_id,Latency,Jitter,Packet_loss,Download,Upload,Download_bytes,Upload_bytes,Share_url,IP"
 
 # Check command
-commandlist=("$speedtest" "wget" "curl")
+commandlist=("$speedtest" "wget" "curl" "dig")
 for i in "${commandlist[@]}"; do
     if ! [ -x "$(command -v $i)" ]; then
         echo "$i not exist" 
