@@ -49,7 +49,7 @@ if [ $internet != 0 ]; then
     else 
         #Output online result to CSV file
         isp=$(curl -s /dev/null ipinfo.io/org 2>&1)
-        ip=$(curl -s /dev/null ifconfig.co 2>&1)
+        ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
         result=$($speedtest -f csv)
         echo "$timestamp",\"$isp\",$result,"$ip" >> $SCRIPT_DIR/result.csv
 fi 
