@@ -32,7 +32,7 @@ fi
 
 #TODO - Keep only 1 month CSV row (Untested)
 mtd=$(date +%m) 
-resultlength=$(cat $SCRIPT_DIR/result.csv |wc -l)
+resultlength=$(awk 'END{print NR}' $SCRIPT_DIR/result.csv)
 csvmnt=$(sed -n '2p' $SCRIPT_DIR/result.csv |cut -d- -f2)
 if [ $resultlength > 2 ] && [ $mtd -ne $csvmnt ]; then
     rm $SCRIPT_DIR/result.csv
