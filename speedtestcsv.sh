@@ -48,7 +48,7 @@ if [ $internet != 0 ]; then
     echo "$timestamp","OFFLINE","OFFLINE","OFFLINE","OFFLINE","OFFLINE","OFFLINE","OFFLINE","OFFLINE","OFFLINE","OFFLINE","OFFLINE" >> $SCRIPT_DIR/result.csv
     else 
         #Output online result to CSV file
-        isp=$(curl -s ipinfo.io/org)
+        isp=$(curl -s /dev/null ipinfo.io/org 2>&1)
         ip=$(curl -s /dev/null ifconfig.co 2>&1)
         result=$($speedtest -f csv)
         echo "$timestamp",\"$isp\",$result,"$ip" >> $SCRIPT_DIR/result.csv
