@@ -31,7 +31,7 @@ if ! [ -f $SCRIPT_DIR/result.csv ]; then
 fi
 
 #TODO - Keep only 1 month CSV row (Untested)
-mtd=$(date --iso-8601 |cut -d '-' -f2) 
+mtd=$(date +%m) 
 resultlength=$(cat $SCRIPT_DIR/result.csv |wc -l)
 csvmnt=$(sed -n '2p' $SCRIPT_DIR/result.csv |cut -d- -f2)
 if [ $resultlength > 2 ] && [ $mtd -ne $csvmnt ]; then
