@@ -30,7 +30,7 @@ if ! [ -f $SCRIPT_DIR/result.csv ]; then
     header
 fi
 
-#TODO - Keep only 1 month CSV row (Untested)
+#Keep only 1 month CSV row
 mtd=$(date +%m) 
 resultlength=$(awk 'END{print NR}' $SCRIPT_DIR/result.csv)
 csvmnt=$(awk -F'-' '(NR==2){print $2}' $SCRIPT_DIR/result.csv)
