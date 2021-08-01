@@ -34,9 +34,9 @@ fi
 mtd=$(date +%m) 
 resultlength=$(awk 'END{print NR}' $SCRIPT_DIR/result.csv)
 csvmnt=$(awk -F'-' '(NR==2){print $2}' $SCRIPT_DIR/result.csv)
-mtdy=$(date +%m-%y)
+ytd=$(date +%y)
 if [ $resultlength > 2 ] && [ $mtd -ne $csvmnt ]; then
-    mv $SCRIPT_DIR/result.csv $SCRIPT_DIR/${mtdy}-result.csv
+    mv $SCRIPT_DIR/result.csv $SCRIPT_DIR/${csvmnt}-${ytd}-result.csv
     sleep 1
     header
 fi
