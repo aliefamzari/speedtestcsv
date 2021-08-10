@@ -6,7 +6,7 @@
 
 
 #Speedtest bin path
-speedtest="/home/pi/speedtestookla/speedtest"  #PLEASE CHANGE THIS PATH POINT TO WHERE YOU UNTAR YOUR SPEEDTEST INSTALL. For debian/ubuntu, if you install using curl script from official site, just change this path to the absolute path ie /usr/bin/speedtest 
+speedtest="/home/alif/ooklaspeedtest/speedtest"  #PLEASE CHANGE THIS PATH POINT TO WHERE YOU UNTAR YOUR SPEEDTEST INSTALL. For debian/ubuntu, if you install using curl script from official site, just change this path to the absolute path ie /usr/bin/speedtest 
 #Get current directory where script is located. Speedtest result.csv will be stored on same directory as script file. 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 timestamp=$(date --iso-8601=s)
@@ -51,6 +51,8 @@ if [ $internet != 0 ]; then
         #Output online result to CSV file
         isp=$(curl -s /dev/null ipinfo.io/org 2>&1)
         ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
-        result=$($speedtest -f csv)
-        echo "$timestamp",\"$isp\",$result,"$ip" >> $SCRIPT_DIR/result.csv
+        result=$($speedtest -f csv 2>error.log)
+        if [ $? -eq 0 ]; then
+                echo "$timestamp",\"$isp\",$result,"$ip" >> $SCRIPT_DIR/result.csv
+        fi
 fi 
