@@ -5,8 +5,6 @@
 # License MIT
 
 
-#Speedtest bin path
-#speedtest="/home/alif/ooklaspeedtest/speedtest"  #PLEASE CHANGE THIS PATH POINT TO WHERE YOU UNTAR YOUR SPEEDTEST INSTALL. For debian/ubuntu, if you install using curl script from official site, just change this path to the absolute path ie /usr/bin/speedtest 
 #Get current directory where script is located. Speedtest result.csv will be stored on same directory as script file. 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 timestamp=$(date --iso-8601=s)
