@@ -24,7 +24,14 @@ $TestFile = Test-Path $ScriptDir\result.csv
 if (!$TestFile) {
     write-header
 }
-# $timestamp | Add-Content -Path $ScriptDir\result.csv
+
+#Check Internet if offline or online
+#$internet = Invoke-WebRequest -uri "http://google.com" -UseBasicParsing
+$internet = Test-Connection google.com -Count 2 -quiet
+if (!$internet){
+    Write-Output "$timestamp,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE" | Add-Content -Path $ScriptDir\result.csv
+    exit 1
+}
 
 $isp = (Invoke-WebRequest -uri "ipinfo.io/org" -UseBasicParsing).content
 $ip = (Resolve-DnsName myip.opendns.com -server resolver1.opendns.com -type A).IPaddress
@@ -34,3 +41,4 @@ $result = & "$($scriptdir)\speedtest.exe" --format=csv --accept-license --accept
 $trim = Write-Output "$timestamp,$isp,$result,$ip" |out-string
 $trim = $trim -replace "`t|`n|`r",""
 $trim | Add-Content -Path $ScriptDir\result.csv
+
