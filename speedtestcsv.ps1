@@ -1,3 +1,5 @@
+
+#Download Ookla speedtest from internet, save to programdata, unzip the zip file.
 $DownloadURL = "https://install.speedtest.net/app/cli/ookla-speedtest-1.0.0-win64.zip"
 $ScriptDir = "$($env:ProgramData)\SpeedtestCLI"
 try {
@@ -12,33 +14,40 @@ catch {
     write-host "Download/extract of speedtestcli failed. Error: $($_.Exception.Message)"
     exit 
 }
+
+# Some var
 $csvheader = "Time,ISP,Server_name,Server_id,Latency,Jitter,Packet_loss,Download,Upload,Download_bytes,Upload_bytes,Share_url,IP"
 $timestamp = get-date -UFormat "%Y-%m-%dT%H:%M:%S%Z:00"
 
+# header function
 function write-header {
     $csvheader | Out-File $ScriptDir\result.csv
     
 }
-
+#test result.csv if exist or not
 $TestFile = Test-Path $ScriptDir\result.csv
 if (!$TestFile) {
     write-header
 }
 
 #Check Internet if offline or online
-#$internet = Invoke-WebRequest -uri "http://google.com" -UseBasicParsing
 $internet = Test-Connection google.com -Count 2 -quiet
 if (!$internet){
     Write-Output "$timestamp,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE" | Add-Content -Path $ScriptDir\result.csv
     exit 1
 }
 
+#Additional data 
 $isp = (Invoke-WebRequest -uri "ipinfo.io/org" -UseBasicParsing).content
 $ip = (Resolve-DnsName myip.opendns.com -server resolver1.opendns.com -type A).IPaddress
+
+#Perform speedtest
 $result = & "$($scriptdir)\speedtest.exe" --format=csv --accept-license --accept-gdpr
 
-#"$timestamp, $isp,$result,$ip" | Add-Content -Path $ScriptDir\result.csv
+#trim result to remove line breaks
 $trim = Write-Output "$timestamp,$isp,$result,$ip" |out-string
 $trim = $trim -replace "`t|`n|`r",""
+
+#Append data to result.csv
 $trim | Add-Content -Path $ScriptDir\result.csv
 
