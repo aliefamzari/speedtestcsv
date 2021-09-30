@@ -37,6 +37,11 @@ if (!$TestFile) {
     write-header
 }
 
+# TODO Keeep only 1 month CSV row
+# $resultlength = (Get-Content $scriptdir\result.csv).Length
+# $csvmnt = (Get-Content $ScriptDir\result.csv)[1]
+# $csvmnt = $csvmnt.Substring(0, $csvmnt.IndexOf(',')) -split ('-') |Select-Object -Index 1
+
 #Check Internet if offline or online
 $internet = Test-Connection google.com -Count 2 -quiet
 if (!$internet){
