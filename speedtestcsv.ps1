@@ -1,4 +1,11 @@
 
+# Test your internet speed and output to CSV file.
+# Intended to run on scheduler task.
+# Script will download,unzip speedtest binary and save it to C:\ProgramData\SpeedtestCLI\
+# Result will be save on C:\ProgramData\SpeedtestCLI\result.csv
+# Author: Alif Amzari Mohd Azamee
+# License MIT
+
 #Download Ookla speedtest from internet, save to programdata, unzip the zip file.
 $DownloadURL = "https://install.speedtest.net/app/cli/ookla-speedtest-1.0.0-win64.zip"
 $ScriptDir = "$($env:ProgramData)\SpeedtestCLI"
