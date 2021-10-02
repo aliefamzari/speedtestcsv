@@ -1,10 +1,42 @@
 
-# Test your internet speed and output to CSV file.
-# Intended to run on scheduler task.
-# Script will download,unzip speedtest binary and save it to C:\ProgramData\SpeedtestCLI\
-# Result will be save on C:\ProgramData\SpeedtestCLI\result.csv
-# Author: Alif Amzari Mohd Azamee
-# License MIT
+<# Test your internet speed and output to CSV file.
+Intended to run on scheduler task.
+Script will download,unzip speedtest binary and save it to C:\ProgramData\SpeedtestCLI\
+Result will be save on C:\ProgramData\SpeedtestCLI\result.csv
+Author: Alif Amzari Mohd Azamee
+License MIT
+#>
+
+# Notification Function
+function Show-Notification {
+    [cmdletbinding()]
+    Param (
+        [string]
+        $ToastTitle,
+        [string]
+        [parameter(ValueFromPipeline)]
+        $ToastText
+    )
+
+    [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] > $null
+    $Template = [Windows.UI.Notifications.ToastNotificationManager]::GetTemplateContent([Windows.UI.Notifications.ToastTemplateType]::ToastText02)
+
+    $RawXml = [xml] $Template.GetXml()
+    ($RawXml.toast.visual.binding.text|Where-Object {$_.id -eq "1"}).AppendChild($RawXml.CreateTextNode($ToastTitle)) > $null
+    ($RawXml.toast.visual.binding.text|Where-Object {$_.id -eq "2"}).AppendChild($RawXml.CreateTextNode($ToastText)) > $null
+
+    $SerializedXml = New-Object Windows.Data.Xml.Dom.XmlDocument
+    $SerializedXml.LoadXml($RawXml.OuterXml)
+
+    $Toast = [Windows.UI.Notifications.ToastNotification]::new($SerializedXml)
+    $Toast.Tag = "Powershell"
+    $Toast.Group = "PowerShell"
+    $Toast.ExpirationTime = [DateTimeOffset]::Now.AddMinutes(1)
+
+    $Notifier = [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("PowerShell")
+    $Notifier.Show($Toast);
+}
+Show-Notification SpeedTestCli Running
 
 #Download Ookla speedtest from internet, save to programdata, unzip the zip file.
 $DownloadURL = "https://install.speedtest.net/app/cli/ookla-speedtest-1.0.0-win64.zip"
@@ -24,7 +56,7 @@ catch {
 
 # Some var
 $csvheader = "Time,ISP,Server_name,Server_id,Latency,Jitter,Packet_loss,Download,Upload,Download_bytes,Upload_bytes,Share_url,IP"
-$timestamp = get-date -UFormat "%Y-%m-%dT%H:%M:%S%Z:00"
+$timestamp = Get-Date -UFormat "%Y-%m-%dT%H:%M:%S%Z:00"
 
 # header function
 function write-header {
@@ -38,6 +70,8 @@ if (!$TestFile) {
 }
 
 # TODO Keeep only 1 month CSV row
+# $mtd = Get-Date -UFormat %m
+# $ytd = Get-Date -UFormat %y
 # $resultlength = (Get-Content $scriptdir\result.csv).Length
 # $csvmnt = (Get-Content $ScriptDir\result.csv)[1]
 # $csvmnt = $csvmnt.Substring(0, $csvmnt.IndexOf(',')) -split ('-') |Select-Object -Index 1
@@ -63,3 +97,11 @@ $trim = $trim -replace "`t|`n|`r",""
 #Append data to result.csv
 $trim | Add-Content -Path $ScriptDir\result.csv
 
+#Show result to windows notification
+$ds = $result -split ',' |Select-Object -Index 7
+$ds = $ds.Trim('"')
+$ds = [math]::Round($ds / 10000000 * 8, 2)
+$us = $result -split ',' |Select-Object -Index 8
+$us = $us.Trim('"')
+$us = [math]::Round($us / 10000000 * 8, 2)
+Show-Notification "SpeedTest Result" "DownloadSpeed=$ds`Mbps `UploadSpeed=$us`Mbps" 
