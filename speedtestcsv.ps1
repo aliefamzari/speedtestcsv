@@ -98,10 +98,10 @@ $trim = $trim -replace "`t|`n|`r",""
 $trim | Add-Content -Path $ScriptDir\result.csv
 
 #Show result to windows notification
-$ds = $result -split ',' |Select-Object -Index 7
+$ds = $result -split ',' |Select-Object -Index 5
 $ds = $ds.Trim('"')
-$ds = [math]::Round($ds / 10000000 * 8, 2)
-$us = $result -split ',' |Select-Object -Index 8
+$ds = [math]::Round($ds / 1000000 * 8, 2)
+$us = $result -split ',' |Select-Object -Index 6
 $us = $us.Trim('"')
-$us = [math]::Round($us / 10000000 * 8, 2)
-Show-Notification "SpeedTest Result" "DownloadSpeed=$ds`Mbps `UploadSpeed=$us`Mbps" 
+$us = [math]::Round($us / 1000000 * 8, 2)
+Show-Notification "SpeedTest Result" "DownloadSpeed=$ds`Mbps UploadSpeed=$us`Mbps" 
