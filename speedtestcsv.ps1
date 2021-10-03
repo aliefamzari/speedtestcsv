@@ -40,13 +40,13 @@ Show-Notification SpeedTestCli Running
 
 #Download Ookla speedtest from internet, save to programdata, unzip the zip file.
 $DownloadURL = "https://install.speedtest.net/app/cli/ookla-speedtest-1.0.0-win64.zip"
-$ScriptDir = "$($env:ProgramData)\SpeedtestCLI"
+$OutDir = "$($env:ProgramData)\SpeedtestCLI"
 try {
-    $TestDoownloadLocation =  Test-Path $ScriptDir
+    $TestDoownloadLocation =  Test-Path $OutDir
     if (!$TestDoownloadLocation) {
-        New-Item $ScriptDir -ItemType Directory -Force
-        Invoke-WebRequest -Uri $DownloadURL -OutFile "$($ScriptDir)\speedtest.zip"
-        Expand-Archive "$($ScriptDir)\speedtest.zip" -DestinationPath $ScriptDir -Force
+        New-Item $OutDir -ItemType Directory -Force
+        Invoke-WebRequest -Uri $DownloadURL -OutFile "$($OutDir)\speedtest.zip"
+        Expand-Archive "$($OutDir)\speedtest.zip" -DestinationPath $OutDir -Force
     }
 }
 catch {
@@ -60,26 +60,27 @@ $timestamp = Get-Date -UFormat "%Y-%m-%dT%H:%M:%S%Z:00"
 
 # header function
 function write-header {
-    $csvheader | Out-File $ScriptDir\result.csv
+    $csvheader | Out-File $OutDir\result.csv
     
 }
 #test result.csv if exist or not
-$TestFile = Test-Path $ScriptDir\result.csv
+$TestFile = Test-Path $OutDir\result.csv
 if (!$TestFile) {
     write-header
 }
 
-# TODO Keeep only 1 month CSV row
-# $mtd = Get-Date -UFormat %m
-# $ytd = Get-Date -UFormat %y
-# $resultlength = (Get-Content $scriptdir\result.csv).Length
-# $csvmnt = (Get-Content $ScriptDir\result.csv)[1]
-# $csvmnt = $csvmnt.Substring(0, $csvmnt.IndexOf(',')) -split ('-') |Select-Object -Index 1
+<# TODO Keeep only 1 month CSV row
+ $mtd = Get-Date -UFormat %m
+ $ytd = Get-Date -UFormat %y
+ $resultlength = (Get-Content $OutDir\result.csv).Length
+ $csvmnt = (Get-Content $OutDir\result.csv)[1]
+ $csvmnt = $csvmnt.Substring(0, $csvmnt.IndexOf(',')) -split ('-') |Select-Object -Index 1
+#>
 
 #Check Internet if offline or online
 $internet = Test-Connection google.com -Count 2 -quiet
 if (!$internet){
-    Write-Output "$timestamp,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE" | Add-Content -Path $ScriptDir\result.csv
+    Write-Output "$timestamp,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE,OFFLINE" | Add-Content -Path $OutDir\result.csv
     exit 1
 }
 
@@ -88,14 +89,14 @@ $isp = (Invoke-WebRequest -uri "ipinfo.io/org" -UseBasicParsing).content
 $ip = (Resolve-DnsName myip.opendns.com -server resolver1.opendns.com -type A).IPaddress
 
 #Perform speedtest
-$result = & "$($scriptdir)\speedtest.exe" --format=csv --accept-license --accept-gdpr
+$result = & "$($OutDir)\speedtest.exe" --format=csv --accept-license --accept-gdpr
 
 #trim result to remove line breaks
 $trim = Write-Output "$timestamp,$isp,$result,$ip" |out-string
 $trim = $trim -replace "`t|`n|`r",""
 
 #Append data to result.csv
-$trim | Add-Content -Path $ScriptDir\result.csv
+$trim | Add-Content -Path $OutDir\result.csv
 
 #Show result to windows notification
 $ds = $result -split ',' |Select-Object -Index 5
