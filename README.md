@@ -11,7 +11,7 @@
 **Windows/Powershell (speedtestcsv.ps1)**
 
 1. Test your internet speed and output to CSV file.
-2. Powershell script will download,unzip speedtest binary and save it to C:\ProgramData\SpeedtestCLI\
+2. Powershell script will download,unzip speedtest binary, execute speedtest.exe at the location C:\ProgramData\SpeedtestCLI\
 3. Result will be save on C:\ProgramData\SpeedtestCLI\result.csv
 4. Intended to run as task scheduler. For example every 1 hour. To hide windows powershell frame, check the box *'Run whether user is logged on or not'* in Task Scheduler settings.
 5. Download/Upload result will popup as windows notification on each run. 
