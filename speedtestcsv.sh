@@ -51,6 +51,7 @@ if [ $internet != 0 ]; then
         isp=$(curl -s /dev/null ipinfo.io/org 2>&1)
         ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
         result=$($speedtest -f csv 2>error.log)
+        result=$(echo $result |cut -d ',' -f1-10 )
         if [ $? -eq 0 ]; then
                 echo "$timestamp",\"$isp\",$result,"$ip" >> $SCRIPT_DIR/result.csv
         fi
