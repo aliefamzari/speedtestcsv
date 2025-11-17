@@ -135,11 +135,11 @@ def main():
         sys.exit(1)
     
     # Get list of CSV files
-    csv_files = glob.glob(path_pattern)
-    if not csv_files:
-        # Try as a directory
-        if os.path.isdir(path_pattern):
-            csv_files = glob.glob(os.path.join(path_pattern, "*.csv"))
+    # Check if it's a directory first
+    if os.path.isdir(path_pattern):
+        csv_files = glob.glob(os.path.join(path_pattern, "*.csv"))
+    else:
+        csv_files = glob.glob(path_pattern)
     
     if not csv_files:
         print(f"No CSV files found matching: {path_pattern}")
