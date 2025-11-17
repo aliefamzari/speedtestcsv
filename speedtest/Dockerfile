@@ -27,5 +27,8 @@ COPY speedtest_influx_v1.py /app/speedtest_influx.py
 # Make script executable
 RUN chmod +x /app/speedtest_influx.py
 
+# Set Python to run in unbuffered mode so logs appear immediately
+ENV PYTHONUNBUFFERED=1
+
 # Run the script
-CMD ["python3", "/app/speedtest_influx.py"]
+CMD ["python3", "-u", "/app/speedtest_influx.py"]
