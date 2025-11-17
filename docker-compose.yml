@@ -40,6 +40,8 @@ services:
       dockerfile: speedtest/Dockerfile
     container_name: speedtest-runner
     restart: unless-stopped
+    volumes:
+      - ./import_data:/import_data
     environment:
       - INFLUXDB_HOST=influxdb
       - INFLUXDB_PORT=8086
