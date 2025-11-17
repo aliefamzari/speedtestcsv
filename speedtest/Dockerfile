@@ -1,10 +1,12 @@
 FROM python:3.11-slim
 
-# Install dependencies
+# Install dependencies including build tools for compiling Python packages
 RUN apt-get update && apt-get install -y \
     curl \
     gnupg \
     iputils-ping \
+    gcc \
+    python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Ookla Speedtest CLI
