@@ -1,0 +1,21 @@
+# Ignore Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore environment files
+.env
+
+# Ignore InfluxDB and Grafana data
+influxdb-data/
+grafana-data/
+
+# Ignore logs
+*.log
+error.log
+
+# Ignore old CSV files (if keeping legacy script)
+*.csv
+
+# Ignore Docker volumes
+volumes/
