@@ -12,7 +12,7 @@ import sys
 import json
 import subprocess
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 from influxdb import InfluxDBClient
 
 # Environment variables
@@ -120,12 +120,19 @@ def write_to_influxdb(client, data, is_offline=False):
     except Exception as e:
         print(f"? Failed to write to InfluxDB: {e}")
 
+def wait_until_next_hour():
+    """Calculate seconds until the next full hour"""
+    now = datetime.now()
+    next_hour = now.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1)
+    seconds_until_next_hour = (next_hour - now).total_seconds()
+    return seconds_until_next_hour
+
 def main():
-    """Main loop - run speedtest at specified intervals"""
+    """Main loop - run speedtest at the top of every hour"""
     print("=== Speedtest to InfluxDB Service ===")
     print(f"InfluxDB Host: {INFLUXDB_HOST}:{INFLUXDB_PORT}")
     print(f"Database: {INFLUXDB_DATABASE}")
-    print(f"Interval: {SPEEDTEST_INTERVAL} seconds ({SPEEDTEST_INTERVAL/60:.0f} minutes)")
+    print(f"Schedule: Every hour at :00 (e.g., 1:00, 2:00, 3:00, etc.)")
     print("=====================================\n")
     
     # Initialize InfluxDB client
@@ -156,8 +163,21 @@ def main():
     
     print("\nStarting speedtest monitoring...\n")
     
+    # Run first test immediately
+    first_run = True
+    
     while True:
         try:
+            if first_run:
+                print("Running initial speedtest...")
+                first_run = False
+            else:
+                # Wait until the next full hour
+                wait_time = wait_until_next_hour()
+                next_run = datetime.now() + timedelta(seconds=wait_time)
+                print(f"Next test at: {next_run.strftime('%Y-%m-%d %H:%M:%S')} (in {wait_time/60:.1f} minutes)\n")
+                time.sleep(wait_time)
+            
             print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Running speedtest...")
             
             # Check internet connectivity
@@ -178,9 +198,6 @@ def main():
                 else:
                     print("? Speedtest failed")
                     write_to_influxdb(client, None, is_offline=True)
-            
-            print(f"Next test in {SPEEDTEST_INTERVAL} seconds...\n")
-            time.sleep(SPEEDTEST_INTERVAL)
             
         except KeyboardInterrupt:
             print("\n\nShutting down gracefully...")
