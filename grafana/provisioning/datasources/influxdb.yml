@@ -5,11 +5,10 @@ datasources:
     type: influxdb
     access: proxy
     url: http://influxdb:8086
-    jsonData:
-      version: Flux
-      organization: speedtest
-      defaultBucket: speedtest
-      tlsSkipVerify: true
+    database: speedtest
+    user: admin
     secureJsonData:
-      token: my-super-secret-auth-token
+      password: adminpassword123
+    jsonData:
+      httpMode: GET
     editable: true

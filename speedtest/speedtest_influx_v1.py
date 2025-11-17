@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """
-Internet Speed Test to InfluxDB
+Internet Speed Test to InfluxDB v1.8
 Runs Ookla Speedtest CLI and stores results in InfluxDB for Grafana visualization
+Compatible with Raspberry Pi ARM architecture
 Author: Alif Amzari Mohd Azamee
 License: MIT
 """
@@ -56,51 +57,65 @@ def run_speedtest():
         return None
 
 def write_to_influxdb(client, data, is_offline=False):
-    """Write speedtest data to InfluxDB"""
-    write_api = client.write_api(write_options=SYNCHRONOUS)
+    """Write speedtest data to InfluxDB v1.8"""
     
-    point = Point("speedtest")
+    json_body = []
     
     if is_offline:
         # Write offline status
-        point.tag("status", "offline") \
-             .field("download", 0.0) \
-             .field("upload", 0.0) \
-             .field("latency", 0.0) \
-             .field("jitter", 0.0) \
-             .field("packet_loss", 0.0)
+        point = {
+            "measurement": "speedtest",
+            "tags": {
+                "status": "offline"
+            },
+            "fields": {
+                "download": 0.0,
+                "upload": 0.0,
+                "latency": 0.0,
+                "jitter": 0.0,
+                "packet_loss": 0.0
+            }
+        }
     else:
         # Extract data from speedtest result
-        point.tag("status", "online")
-        point.tag("isp", data.get('isp', 'Unknown'))
-        point.tag("server_name", data.get('server', {}).get('name', 'Unknown'))
-        point.tag("server_id", str(data.get('server', {}).get('id', 0)))
-        point.tag("server_location", data.get('server', {}).get('location', 'Unknown'))
-        point.tag("server_country", data.get('server', {}).get('country', 'Unknown'))
-        
         # Convert bits per second to megabits per second
         download_mbps = data.get('download', {}).get('bandwidth', 0) * 8 / 1_000_000
         upload_mbps = data.get('upload', {}).get('bandwidth', 0) * 8 / 1_000_000
         
-        point.field("download", round(download_mbps, 2))
-        point.field("upload", round(upload_mbps, 2))
-        point.field("latency", data.get('ping', {}).get('latency', 0.0))
-        point.field("jitter", data.get('ping', {}).get('jitter', 0.0))
-        point.field("packet_loss", data.get('packetLoss', 0.0))
-        point.field("download_bytes", data.get('download', {}).get('bytes', 0))
-        point.field("upload_bytes", data.get('upload', {}).get('bytes', 0))
+        point = {
+            "measurement": "speedtest",
+            "tags": {
+                "status": "online",
+                "isp": data.get('isp', 'Unknown'),
+                "server_name": data.get('server', {}).get('name', 'Unknown'),
+                "server_id": str(data.get('server', {}).get('id', 0)),
+                "server_location": data.get('server', {}).get('location', 'Unknown'),
+                "server_country": data.get('server', {}).get('country', 'Unknown')
+            },
+            "fields": {
+                "download": round(download_mbps, 2),
+                "upload": round(upload_mbps, 2),
+                "latency": data.get('ping', {}).get('latency', 0.0),
+                "jitter": data.get('ping', {}).get('jitter', 0.0),
+                "packet_loss": data.get('packetLoss', 0.0),
+                "download_bytes": data.get('download', {}).get('bytes', 0),
+                "upload_bytes": data.get('upload', {}).get('bytes', 0)
+            }
+        }
         
         # Additional metadata
         if 'interface' in data:
-            point.tag("interface_name", data['interface'].get('name', 'Unknown'))
-            point.field("internal_ip", data['interface'].get('internalIp', ''))
-            point.field("external_ip", data['interface'].get('externalIp', ''))
+            point['tags']['interface_name'] = data['interface'].get('name', 'Unknown')
+            point['fields']['internal_ip'] = data['interface'].get('internalIp', '')
+            point['fields']['external_ip'] = data['interface'].get('externalIp', '')
         
         if 'result' in data:
-            point.field("result_url", data['result'].get('url', ''))
+            point['fields']['result_url'] = data['result'].get('url', '')
+    
+    json_body.append(point)
     
     try:
-        write_api.write(bucket=INFLUXDB_BUCKET, record=point)
+        client.write_points(json_body)
         print(f"? Data written to InfluxDB at {datetime.now().isoformat()}")
     except Exception as e:
         print(f"? Failed to write to InfluxDB: {e}")
@@ -108,19 +123,33 @@ def write_to_influxdb(client, data, is_offline=False):
 def main():
     """Main loop - run speedtest at specified intervals"""
     print("=== Speedtest to InfluxDB Service ===")
-    print(f"InfluxDB URL: {INFLUXDB_URL}")
-    print(f"Organization: {INFLUXDB_ORG}")
-    print(f"Bucket: {INFLUXDB_BUCKET}")
+    print(f"InfluxDB Host: {INFLUXDB_HOST}:{INFLUXDB_PORT}")
+    print(f"Database: {INFLUXDB_DATABASE}")
     print(f"Interval: {SPEEDTEST_INTERVAL} seconds ({SPEEDTEST_INTERVAL/60:.0f} minutes)")
     print("=====================================\n")
     
     # Initialize InfluxDB client
-    client = InfluxDBClient(url=INFLUXDB_URL, token=INFLUXDB_TOKEN, org=INFLUXDB_ORG)
+    client = InfluxDBClient(
+        host=INFLUXDB_HOST,
+        port=INFLUXDB_PORT,
+        username=INFLUXDB_USER,
+        password=INFLUXDB_PASSWORD,
+        database=INFLUXDB_DATABASE
+    )
     
-    # Verify connection
+    # Verify connection and create database if it doesn't exist
     try:
-        health = client.health()
-        print(f"? InfluxDB connection: {health.status}")
+        client.ping()
+        print(f"? InfluxDB connection successful")
+        
+        # Create database if it doesn't exist
+        databases = client.get_list_database()
+        if not any(db['name'] == INFLUXDB_DATABASE for db in databases):
+            client.create_database(INFLUXDB_DATABASE)
+            print(f"? Created database: {INFLUXDB_DATABASE}")
+        else:
+            print(f"? Database exists: {INFLUXDB_DATABASE}")
+            
     except Exception as e:
         print(f"? Failed to connect to InfluxDB: {e}")
         sys.exit(1)

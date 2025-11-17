@@ -14,13 +14,13 @@ RUN curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/scr
     rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
-RUN pip install --no-cache-dir influxdb-client
+RUN pip install --no-cache-dir influxdb
 
 # Create app directory
 WORKDIR /app
 
 # Copy the speedtest script
-COPY speedtest_influx.py /app/
+COPY speedtest_influx_v1.py /app/speedtest_influx.py
 
 # Make script executable
 RUN chmod +x /app/speedtest_influx.py
