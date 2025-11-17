@@ -35,7 +35,9 @@ services:
       - speedtest-network
 
   speedtest:
-    build: ./speedtest
+    build:
+      context: .
+      dockerfile: speedtest/Dockerfile
     container_name: speedtest-runner
     restart: unless-stopped
     environment:

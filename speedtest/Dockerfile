@@ -22,8 +22,8 @@ RUN pip install --no-cache-dir influxdb
 WORKDIR /app
 
 # Copy the speedtest script and import tool
-COPY speedtest_influx_v1.py /app/speedtest_influx.py
-COPY ../import_csv_to_influx.py /app/import_csv_to_influx.py
+COPY speedtest/speedtest_influx_v1.py /app/speedtest_influx.py
+COPY import_csv_to_influx.py /app/import_csv_to_influx.py
 
 # Make scripts executable
 RUN chmod +x /app/speedtest_influx.py /app/import_csv_to_influx.py
