@@ -15,7 +15,7 @@ grafana-data/
 error.log
 
 # Ignore old CSV files (if keeping legacy script)
-*.csv
+# *.csv
 
 # Ignore Docker volumes
 volumes/
