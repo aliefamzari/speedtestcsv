@@ -1,21 +1,63 @@
 # speedtestcsv
 
-**Linux/Bash (speedtestcsv.sh)**
+Monitor your internet speed with automated testing and live Grafana dashboards.
 
-**Requirement:** Speedtest bin from https://www.speedtest.net/apps/cli. Please manually download the bin from official site. 
+## ?? Docker Solution (Recommended)
 
-1. Test your internet speed and output to CSV file, intended to run on cron. Using Speedtest from ookla. Speedtest-cli from Sivel will not work and unsupported. 
-2. For debian/ubuntu, if you install using curl script from official site, change the bin path variable to absolute path ie /usr/bin/speedtest    
-3. Crontab entry example (run every hour): */60 * * * * /home/pi/speedtestcsv/speedtestcsv.sh
+**Automated speedtest monitoring with InfluxDB + Grafana**
 
-**Windows/Powershell (speedtestcsv.ps1)**
+- ?? Runs in Docker containers (perfect for Raspberry Pi/Portainer)
+- ?? Live Grafana dashboards with historical data visualization
+- ? Automatic hourly testing at :00 (e.g., 1:00, 2:00, 3:00...)
+- ?? InfluxDB 1.8 time-series database
+- ?? Track download/upload speeds, latency, jitter, packet loss
 
-1. Test your internet speed and output to CSV file.
-2. Powershell script will download,unzip speedtest binary, execute speedtest.exe at the location C:\ProgramData\SpeedtestCLI\
-3. Result will be save on C:\ProgramData\SpeedtestCLI\result.csv
-4. Intended to run as task scheduler. For example every 1 hour. To hide windows powershell frame, check the box *'Run whether user is logged on or not'* in Task Scheduler settings.
-5. Download/Upload result will popup as windows notification on each run. 
-![Notification](https://github.com/aliefamzari/speedtestcsv/blob/main/img/cUPV0RibaL.png?raw=true "Optional Title") 
+### Quick Start
 
-Output sample:
-![Sample result](https://github.com/aliefamzari/speedtestcsv/blob/main/img/soffice.bin_qio75nrrsIa.png?raw=true "Optional Title")
+```bash
+git clone https://github.com/aliefamzari/speedtestcsv.git
+cd speedtestcsv
+docker compose up -d
+```
+
+Access Grafana at `http://localhost:3000` (default login: admin/admin)
+
+**Documentation:**
+- [?? Docker Deployment Guide](DOCKER_README.md)
+- [?? Raspberry Pi Setup](RASPBERRY_PI_README.md)
+- [?? Import Historical CSV Data](IMPORT_HISTORICAL_DATA.md)
+- [?? ARM Compatibility Notes](ARM_COMPATIBILITY_NOTES.md)
+
+---
+
+## ?? Legacy CSV Scripts (Deprecated)
+
+> ?? **Note**: The standalone bash/PowerShell scripts are deprecated in favor of the Docker solution above. They remain available for backward compatibility.
+
+<details>
+<summary><b>Linux/Bash (speedtestcsv.sh)</b> - Click to expand</summary>
+
+**Requirement:** Speedtest CLI from https://www.speedtest.net/apps/cli
+
+1. Tests internet speed and outputs to CSV file
+2. Intended for cron scheduling
+3. For Debian/Ubuntu, use absolute path: `/usr/bin/speedtest`
+4. Crontab example (hourly): `0 * * * * /home/pi/speedtestcsv/speedtestcsv.sh`
+
+</details>
+
+<details>
+<summary><b>Windows/PowerShell (speedtestcsv.ps1)</b> - Click to expand</summary>
+
+1. Tests internet speed and outputs to CSV file
+2. Auto-downloads Speedtest CLI to `C:\ProgramData\SpeedtestCLI\`
+3. Results saved to `C:\ProgramData\SpeedtestCLI\result.csv`
+4. Intended for Task Scheduler (hourly)
+5. Shows Windows notifications with results
+
+![Notification](https://github.com/aliefamzari/speedtestcsv/blob/main/img/cUPV0RibaL.png?raw=true)
+
+</details>
+
+**CSV Output Sample:**
+![Sample result](https://github.com/aliefamzari/speedtestcsv/blob/main/img/soffice.bin_qio75nrrsIa.png?raw=true)
