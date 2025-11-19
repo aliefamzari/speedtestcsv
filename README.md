@@ -2,15 +2,15 @@
 
 Monitor your internet speed with automated testing and live Grafana dashboards.
 
-## ?? Docker Solution (Recommended)
+## 🚀 Docker Solution (Recommended)
 
 **Automated speedtest monitoring with InfluxDB + Grafana**
 
-- ?? Runs in Docker containers (perfect for Raspberry Pi/Portainer)
-- ?? Live Grafana dashboards with historical data visualization
-- ? Automatic hourly testing at :00 (e.g., 1:00, 2:00, 3:00...)
-- ?? InfluxDB 1.8 time-series database
-- ?? Track download/upload speeds, latency, jitter, packet loss
+- 🐳 Runs in Docker containers (perfect for Raspberry Pi/Portainer)
+- 📊 Live Grafana dashboards with historical data visualization
+- ⏰ Automatic hourly testing at :00 (e.g., 1:00, 2:00, 3:00...)
+- 🔄 InfluxDB 1.8 time-series database
+- 📈 Track download/upload speeds, latency, jitter, packet loss
 
 ### Quick Start
 
@@ -23,16 +23,16 @@ docker compose up -d
 Access Grafana at `http://localhost:3000` (default login: admin/admin)
 
 **Documentation:**
-- [?? Docker Deployment Guide](DOCKER_README.md)
-- [?? Raspberry Pi Setup](RASPBERRY_PI_README.md)
-- [?? Import Historical CSV Data](IMPORT_HISTORICAL_DATA.md)
-- [?? ARM Compatibility Notes](ARM_COMPATIBILITY_NOTES.md)
+- [📖 Docker Deployment Guide](DOCKER_README.md)
+- [🔧 Raspberry Pi Setup](RASPBERRY_PI_README.md)
+- [📥 Import Historical CSV Data](IMPORT_HISTORICAL_DATA.md)
+- [⚙️ ARM Compatibility Notes](ARM_COMPATIBILITY_NOTES.md)
 
 ---
 
-## ?? Legacy CSV Scripts (Deprecated)
+## 📜 Legacy CSV Scripts (Deprecated)
 
-> ?? **Note**: The standalone bash/PowerShell scripts are deprecated in favor of the Docker solution above. They remain available for backward compatibility.
+> ⚠️ **Note**: The standalone bash/PowerShell scripts are deprecated in favor of the Docker solution above. They remain available for backward compatibility.
 
 <details>
 <summary><b>Linux/Bash (speedtestcsv.sh)</b> - Click to expand</summary>
