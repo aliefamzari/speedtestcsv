@@ -7,7 +7,12 @@ RUN apt-get update && apt-get install -y \
     iputils-ping \
     gcc \
     python3-dev \
+    tzdata \
     && rm -rf /var/lib/apt/lists/*
+
+# Set timezone to Malaysia
+ENV TZ=Asia/Kuala_Lumpur
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Install Ookla Speedtest CLI
 RUN curl -s https://packagecloud.io/install/repositories/ookla/speedtest-cli/script.deb.sh | bash && \
