@@ -97,7 +97,7 @@ def write_to_influxdb(client, data, is_offline=False):
                 "upload": round(upload_mbps, 2),
                 "latency": data.get('ping', {}).get('latency', 0.0),
                 "jitter": data.get('ping', {}).get('jitter', 0.0),
-                "packet_loss": data.get('packetLoss', 0.0),
+                "packet_loss": float(data.get('packetLoss', 0.0)),
                 "download_bytes": data.get('download', {}).get('bytes', 0),
                 "upload_bytes": data.get('upload', {}).get('bytes', 0)
             }
